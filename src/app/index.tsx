@@ -1,5 +1,5 @@
 import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -36,6 +36,12 @@ export default function HomeScreen() {
             说说花了多少钱
           </ThemedText>
         </ThemedView>
+        <Pressable style={({ pressed }) => [
+          styles.talkButton,
+          pressed && styles.talkButtonPressed,
+        ]}>
+          <ThemedText type="title">🎙️</ThemedText>
+        </Pressable>
 
         {Platform.OS === 'web' && <WebBadge />}
       </SafeAreaView>
@@ -76,5 +82,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.four,
     borderRadius: Spacing.four,
+  },
+  talkButton: {
+    width: 96,
+    height: 96,
+    // 边框圆角
+    borderRadius: 48,
+    backgroundColor: '#ff7300',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6, // Android
+  },
+  talkButtonPressed: {
+    transform: [{ scale: 0.94 }],
+    opacity: 0.85,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
   },
 });
