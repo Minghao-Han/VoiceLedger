@@ -11,6 +11,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      {/* 自闭合标签 /> 表示这个组件没有子内容，类似 HTML 里的 <img /> */}
       <AnimatedSplashOverlay />
       <AppTabs />
     </ThemeProvider>

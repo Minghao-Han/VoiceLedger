@@ -22,6 +22,13 @@ export const Colors = {
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
   },
+  fresh:{
+    text: '#ffffff',
+    background: '#bacebd',
+    backgroundElement: '#fcf8f4',
+    backgroundSelected: '#ff7300',
+    textSecondary: '#60646C',
+  }
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
