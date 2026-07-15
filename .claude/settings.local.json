@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -i \"\\\\.d\\\\.ts$\")"
+      "Bash(grep -i \"\\\\.d\\\\.ts$\")",
+      "Bash(npx tsc *)",
+      "WebFetch(domain:docs.expo.dev)"
     ]
   }
 }
