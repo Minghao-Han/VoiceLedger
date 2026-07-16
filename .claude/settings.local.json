@@ -6,7 +6,10 @@
       "WebFetch(domain:docs.expo.dev)",
       "WebFetch(domain:gifted-charts.web.app)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git merge *)",
+      "Bash(cp /mnt/d/Applications/budget-app/.claude/worktrees/statistics-list-height-fix/src/app/statistics.tsx /mnt/d/Applications/budget-app/src/app/statistics.tsx)",
+      "Read(//mnt/d/Applications/budget-app/src/app/**)"
     ]
   }
 }
