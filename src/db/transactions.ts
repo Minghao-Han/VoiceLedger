@@ -17,14 +17,14 @@ export async function insertTransaction(db: SQLiteDatabase, data: NewTransaction
     Date.now(),
   );
 }
+export type CategoryTotal = { category: string; total_amount_cents: number };
 
 export async function getTransactionsGroupedByCategory(db: SQLiteDatabase) {
-  const result = await db.runAsync(`
+  return db.getAllAsync<CategoryTotal>(`
     SELECT category, SUM(amount_cents) as total_amount_cents
     FROM transactions
     GROUP BY category
   `);
-  return result;
 }
 
 export async function getTotalSpent(db: SQLiteDatabase): Promise<number> {

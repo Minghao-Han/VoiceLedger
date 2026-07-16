@@ -3,7 +3,8 @@
     "allow": [
       "Bash(grep -i \"\\\\.d\\\\.ts$\")",
       "Bash(npx tsc *)",
-      "WebFetch(domain:docs.expo.dev)"
+      "WebFetch(domain:docs.expo.dev)",
+      "WebFetch(domain:gifted-charts.web.app)"
     ]
   }
 }
