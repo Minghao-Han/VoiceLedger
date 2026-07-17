@@ -38,45 +38,47 @@ export default function TabTwoScreen() {
     // 只处理 bottom 安全区的 SafeAreaView（flex: 1）。这里只需要再处理
     // top/left/right，不能再叠加 bottom padding，否则底部会被吃掉两次，
     // 导致下面的 FlatList 可用高度比预期矮一截。
-    <SafeAreaView style={styles.screen} edges={['top', 'left', 'right']}>
-      <ThemedView style={styles.header}>
-        <ThemedText type="title">总消费：${(totalCents / 100).toFixed(2)}</ThemedText>
+    <ThemedView style={styles.screen}>
+      <SafeAreaView style={styles.screen} >
+        <ThemedView style={styles.header}>
+          <ThemedText type="title">总消费：${(totalCents / 100).toFixed(2)}</ThemedText>
 
-        <PieChart
-          data={categoryTotals.map((c, i) => ({
-            value: c.total_amount_cents,
-            text: c.category + ` $${(c.total_amount_cents / 100).toFixed(2)}`,
-            color: PALETTE[i % PALETTE.length],
-          }))}
-          showText
-          textColor="#fff"
-          textSize={12}
-        />
-      </ThemedView>
+          <PieChart
+            data={categoryTotals.map((c, i) => ({
+              value: c.total_amount_cents,
+              text: c.category + ` $${(c.total_amount_cents / 100).toFixed(2)}`,
+              color: PALETTE[i % PALETTE.length],
+            }))}
+            showText
+            textColor="#fff"
+            textSize={12}
+          />
+        </ThemedView>
 
-      <FlatList
-        data={transactions}
-        keyExtractor={(item) => String(item.id)}
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.listItem}>
-            <ThemedView style={styles.listItemRow}>
-              <ThemedText style={styles.listItemCategory}>{item.category}</ThemedText>
-              <ThemedText style={styles.listItemAmount}>
-                ${(item.amountCents / 100).toFixed(2)}
+        <FlatList
+          data={transactions}
+          keyExtractor={(item) => String(item.id)}
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.listItem}>
+              <ThemedView style={styles.listItemRow}>
+                <ThemedText style={styles.listItemCategory}>{item.category}</ThemedText>
+                <ThemedText style={styles.listItemAmount}>
+                  ${(item.amountCents / 100).toFixed(2)}
+                </ThemedText>
+              </ThemedView>
+
+              <ThemedText style={styles.listItemDate} themeColor="textSecondary">
+                {new Date(item.createdAt).toLocaleDateString()}
               </ThemedText>
+
+              {item.note && <ThemedText style={styles.listItemNote}>{item.note}</ThemedText>}
             </ThemedView>
-
-            <ThemedText style={styles.listItemDate} themeColor="textSecondary">
-              {new Date(item.createdAt).toLocaleDateString()}
-            </ThemedText>
-
-            {item.note && <ThemedText style={styles.listItemNote}>{item.note}</ThemedText>}
-          </ThemedView>
-        )}
-      />
-    </SafeAreaView>
+          )}
+        />
+      </SafeAreaView>
+    </ThemedView>
   );
 }
 
