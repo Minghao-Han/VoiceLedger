@@ -1,0 +1,13 @@
+diff --git a/node_modules/whisper.rn/package.json b/node_modules/whisper.rn/package.json
+index 0000000..0000001 100644
+--- a/node_modules/whisper.rn/package.json
++++ b/node_modules/whisper.rn/package.json
+@@ -12,7 +12,7 @@
+       "import": "./lib/module/*",
+       "require": "./lib/commonjs/*",
+       "types": "./lib/typescript/*",
+-      "react-native": "src/*"
++      "react-native": "./src/*"
+     }
+   },
+   "files": [

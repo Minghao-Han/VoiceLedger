@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~57.0.4",
+    "@fugood/react-native-audio-pcm-stream": "^1.1.4",
     "@react-native-picker/picker": "2.11.4",
+    "buffer": "^6.0.3",
     "expo": "~57.0.4",
     "expo-constants": "~57.0.3",
     "expo-device": "~57.0.0",
+    "expo-file-system": "~57.0.0",
     "expo-font": "~57.0.0",
     "expo-glass-effect": "~57.0.0",
     "expo-image": "~57.0.0",
@@ -30,20 +33,24 @@
     "react-native-screens": "4.25.2",
     "react-native-svg": "15.15.4",
     "react-native-web": "~0.21.0",
-    "react-native-worklets": "0.10.0"
+    "react-native-worklets": "0.10.0",
+    "whisper.rn": "^0.6.0"
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "patch-package": "^8.0.1",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "apk": "expo run:android"
+    "apk": "expo run:android",
+    "download-whisper-model": "node ./scripts/download-whisper-model.js",
+    "postinstall": "patch-package && node ./scripts/download-whisper-model.js"
   },
   "private": true
 }

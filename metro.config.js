@@ -1,0 +1,28 @@
+const { getDefaultConfig } = require('expo/metro-config');
+
+const config = getDefaultConfig(__dirname);
+
+// whisper.rn 的 package.json "exports" 字段只有一条 "./*" 通配符映射，没有给包根路径
+// （"."）单独定义 export，按 Node "exports" 规范严格解析的话，连 `import { initWhisper }
+// from 'whisper.rn'` 这种最基础的写法都解析不出来。关掉 Metro 的 package exports 解析，
+// 改走它 package.json 里 "react-native" 字段指向的物理路径，绕开这个问题。
+config.resolver.unstable_enablePackageExports = false;
+
+// whisper.rn 依赖的 safe-buffer 会 require('buffer')，这是 Node 内置模块，RN 运行时没有。
+// Metro 遇到这种 Node 核心模块名会直接拒绝解析（哪怕 node_modules 里装了同名包也不会自动生效），
+// 必须显式告诉它用哪个包顶替。
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  buffer: require.resolve('buffer'),
+};
+
+// 把 Whisper 的 .bin 模型文件当成打包资源（而不是当源码去解析），
+// 这样 src/lib/whisper.ts 里的 require('.../ggml-tiny.bin') 才能被 Metro 认出来，
+// 让模型跟着 App 一起打包，不需要运行时联网下载
+config.resolver.assetExts.push('bin');
+
+// expo-sqlite 在 web 平台用 wasm 版的 sqlite（wa-sqlite.wasm），Metro 默认的 assetExts
+// 不包含 wasm，不加这行 web 端打包会直接报 "Unable to resolve module ... wa-sqlite.wasm"
+config.resolver.assetExts.push('wasm');
+
+module.exports = config;

@@ -8,7 +8,10 @@
     "scheme": "budgetapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "需要访问麦克风来识别你说的金额"
+      }
     },
     "android": {
       "adaptiveIcon": {

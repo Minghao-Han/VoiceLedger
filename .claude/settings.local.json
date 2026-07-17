@@ -9,7 +9,30 @@
       "Bash(git commit -m ' *)",
       "Bash(git merge *)",
       "Bash(cp /mnt/d/Applications/budget-app/.claude/worktrees/statistics-list-height-fix/src/app/statistics.tsx /mnt/d/Applications/budget-app/src/app/statistics.tsx)",
-      "Read(//mnt/d/Applications/budget-app/src/app/**)"
+      "Read(//mnt/d/Applications/budget-app/src/app/**)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(grep -E \"^d.*\\(android|ios\\)$\")",
+      "Bash(npx expo *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh api *)",
+      "Bash(python3 -c \"import json,sys; [print\\(x['name']\\) for x in json.load\\(sys.stdin\\)]\")",
+      "Bash(python3 -c ' *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm install *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:d[k] for k in ['main','module','types','exports'] if k in d}, indent=2\\)\\)\")",
+      "Bash(awk '/Resolving module .whisper.rn\\\\/index./{f=1} f; /was not resolved/{f=0}')",
+      "Bash(git stash *)",
+      "Bash(awk '/Resolving module .whisper.rn\\\\/index./{f=1} f; /was not resolved/{f=0; exit}')",
+      "Bash(npx patch-package *)",
+      "Bash(cd *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:d.get\\(k\\) for k in ['main','module','react-native','exports','source']}, indent=2\\)\\)\")",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:jocheojeda.com)",
+      "Bash(grep -E \"^\\(android|ios\\)$\")",
+      "WebFetch(domain:www.mintlify.com)",
+      "Bash(node *)",
+      "Bash(awk '/transcribe\\\\\\(/{print NR\": \"$0}' src/index.ts)"
     ]
   }
 }

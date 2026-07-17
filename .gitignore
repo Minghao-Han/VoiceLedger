@@ -41,3 +41,7 @@ example
 # generated native folders
 /ios
 /android
+
+# Whisper 模型文件太大（~75MB），不进 git；npm install 后自动跑
+# scripts/download-whisper-model.js 拉下来
+/assets/models
