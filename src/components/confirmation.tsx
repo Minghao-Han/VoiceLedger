@@ -18,9 +18,19 @@ type Phase = 'loading' | 'form';
 
 const categories = ['餐饮', '交通', '购物', '其他'];
 
+function formatCentsToDollars(cents: string): string {
+    const num = Number(cents);
+    if (isNaN(num)) return "0.00";
+    return (num / 100).toFixed(2);
+}
+
 export default function ConfirmationModal({ visible, onClose }: ConfirmationModalProps) {
     const [phase, setPhase] = useState<Phase>('loading');
     const db = useSQLiteContext();
+    const [amountCents, setAmountCents] = useState('');
+    const [currency, setCurrency] = useState<'USD' | 'RMB'>('USD');
+    const [category, setCategory] = useState<string | null>(null);
+    const [note, setNote] = useState('');
     useEffect(() => {
         if (!visible) return;
 
@@ -28,13 +38,12 @@ export default function ConfirmationModal({ visible, onClose }: ConfirmationModa
         const timer = setTimeout(() => {
             setPhase('form');
         }, 2000);
+        setAmountCents('');
+        setCategory(null);
+        setNote('');
 
         return () => clearTimeout(timer);
     }, [visible]);
-    const [amountCents, setAmountCents] = useState('');
-    const [currency, setCurrency] = useState<'USD' | 'RMB'>('USD');
-    const [category, setCategory] = useState<string | null>(null);
-    const [note, setNote] = useState('');
     return (
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
             <View style={styles.modalBackdrop}>
@@ -43,8 +52,8 @@ export default function ConfirmationModal({ visible, onClose }: ConfirmationModa
                         {phase === 'loading' ? (<ActivityIndicator size="large" />):(
                             <>
                             <TextInput
-                                value={amountCents}
-                                onChangeText={setAmountCents}
+                                value={formatCentsToDollars(amountCents)}
+                                onChangeText={(text) => setAmountCents(text.replace(/[^0-9]/g, ''))}
                                 keyboardType="number-pad"
                                 placeholder="金额（分）"
                                 // style={styles.input}
@@ -67,6 +76,7 @@ export default function ConfirmationModal({ visible, onClose }: ConfirmationModa
                             />
                             
                             <Pressable
+                                disabled={!amountCents.trim() || !category}
                                 onPress={async () => {
                                     if (!amountCents.trim() || !category) return;
                                     // Save data to db
@@ -90,7 +100,12 @@ export default function ConfirmationModal({ visible, onClose }: ConfirmationModa
                                     onClose();
                                 }}
                             >
-                                <ThemedText type="code">保存</ThemedText>
+                                <ThemedText
+                                    type="code"
+                                    style={(!amountCents.trim() || !category) && styles.disabledText}
+                                >
+                                    保存
+                                </ThemedText>
                             </Pressable>
 
                             </>
@@ -124,5 +139,8 @@ export default function ConfirmationModal({ visible, onClose }: ConfirmationModa
     },
     picker: {
         width: '100%',
+    },
+    disabledText: {
+        color: '#999',
     },
 });
