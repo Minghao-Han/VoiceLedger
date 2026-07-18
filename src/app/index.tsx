@@ -8,23 +8,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useFunasrTranscription } from '@/hooks/use-funasr-transcription';
-import { useWhisperTranscription } from '@/hooks/use-voice-transcription';
-
-// 语音识别引擎切换开关：想换回 whisper.rn 就把这行改成 'whisper'。
-// 两套实现是完全独立的（use-voice-transcription.ts / use-funasr-transcription.ts），
-// 谁都不依赖谁，改这一行就能整体切换，不用动业务代码。
-const VOICE_ENGINE: 'whisper' | 'funasr' = 'funasr';
-
-// 用哪个引擎在模块加载时就定下来、之后不会再变，所以把"选哪个 hook"提到组件外面、
-// 只留一次 hook 调用给 React——这样才不会一会儿调用两个 hook、一会儿调用一个，
-// 违反 hooks 的调用规则（同时也避免两个引擎的模型都被加载进内存）
-const useVoiceTranscription =
-  VOICE_ENGINE === 'funasr' ? useFunasrTranscription : useWhisperTranscription;
+import { useVoiceExpense } from '@/hooks/use-voice-expense';
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { startListening, stopListening } = useVoiceTranscription();
+  const { startListening, stopListening } = useVoiceExpense();
 
   return (
     <ThemedView style={styles.container}>

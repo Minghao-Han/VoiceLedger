@@ -23,10 +23,13 @@ function pcmChunksToFloatSamples(chunks: Uint8Array[]): number[] {
 }
 
 // 按住录音、松手用 FunASR（SenseVoice，经 sherpa-onnx 跑在本地）转写成文字，
-// 跟 use-voice-transcription.ts（whisper.rn 方案）是两套独立实现，方便对比效果、随时切换。用法：
-//   const { startListening, stopListening } = useFunasrTranscription();
+// 跟 use-voice-transcription.ts（whisper.rn 方案）是两套独立实现，方便对比效果、随时切换。
+// 只负责"录音 -> 文字"，不知道、也不关心转写完的文字之后要拿去做什么——
+// 想在转写完成后做点什么（比如丢给 LLM 提取结构化信息），通过 onTranscribed 回调拿结果，
+// 不要在这个文件里直接扎进别的 module（保持 STT 和 LLM 两个 module 各自独立，见 use-voice-expense.ts）。用法：
+//   const { startListening, stopListening } = useFunasrTranscription(onTranscribed);
 //   <Pressable onPressIn={startListening} onPressOut={stopListening} />
-export function useFunasrTranscription() {
+export function useFunasrTranscription(onTranscribed?: (text: string) => void) {
   // sttEngine 加载好之前先存到这个 ref 里，不放进 state 是因为它不参与渲染，
   // 用 ref 避免加载完成时触发一次不必要的重渲染
   const sttEngineRef = useRef<Awaited<ReturnType<typeof getSttEngine>> | null>(null);
@@ -101,6 +104,10 @@ export function useFunasrTranscription() {
         `[FunASR] 转写完成，耗时 ${Date.now() - startedAt}ms`
       );
       console.log('语音识别结果:', result.text);
+
+      if (result.text.trim()) {
+        onTranscribed?.(result.text);
+      }
     } catch (error) {
       console.log('[FunASR] 识别出错:', error);
     }

@@ -50,7 +50,13 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['version']\\)\")",
       "Bash(adb devices *)",
       "Bash(python3 -m json.tool)",
-      "Bash(unzip -l /mnt/d/Applications/budget-app/android/app/build/outputs/apk/debug/app-debug.apk)"
+      "Bash(unzip -l /mnt/d/Applications/budget-app/android/app/build/outputs/apk/debug/app-debug.apk)",
+      "WebFetch(domain:docs.swmansion.com)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['version']\\); print\\(d.get\\('main'\\)\\); print\\(list\\(d.get\\('exports',{}\\).keys\\(\\)\\) if 'exports' in d else 'no exports'\\)\")",
+      "Bash(python3 -c \"import json,sys; print\\(json.load\\(sys.stdin\\)['version']\\)\")",
+      "Bash(npm ls *)",
+      "Read(//mnt/d/Applications/android-sdk/ndk/**)",
+      "Read(//mnt/d/Applications/android-sdk/ndk/27.0.12077973/**)"
     ]
   }
 }

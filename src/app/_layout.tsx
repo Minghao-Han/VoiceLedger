@@ -2,10 +2,17 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
+import { initExecutorch } from 'react-native-executorch';
+import { ExpoResourceFetcher } from 'react-native-executorch-expo-resource-fetcher';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import AppTabs from '@/components/app-tabs';
 import { initializeDb } from '@/db/schema';
+
+// react-native-executorch 下模型、缓存文件默认走纯 RN 的文件系统 API，在 Expo 项目里
+// 不可靠；这个适配器让它改用 expo-file-system/expo-asset。必须在任何 useLLM 之类的
+// hook 真正加载模型之前调用一次，放在这个文件顶层（模块只会执行一次）最合适。
+initExecutorch({ resourceFetcher: ExpoResourceFetcher });
 
 SplashScreen.preventAutoHideAsync();
 

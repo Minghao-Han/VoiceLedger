@@ -17,12 +17,15 @@ const AUDIO_CONFIG = { sampleRate: 16000, channels: 1, bitsPerSample: 16 };
 // 词汇去识别（金额、消费分类），而不是当成没有上下文的通用一句话去转写。
 // 分类列表直接从 confirmation.tsx 导入，避免这里的提示词跟 UI 上真实的分类列表脱节；
 // 后面这串词是常见的记账场景词汇，进一步降低识别偏到无关内容的概率。
-const TRANSCRIBE_PROMPT ="以下是包含消费金额的中文语音记录,数字统一使用阿拉伯数字,例如:今天在超市花了35.5元,昨天打车花了12块钱。";
+const TRANSCRIBE_PROMPT ="以下是包含消费金额的中文语音记录,数字统一使用阿拉伯数字。";
 
-// 按住录音、松手用本地 whisper.rn 转写成文字（对比方案见 use-funasr-transcription.ts）。用法：
-//   const { startListening, stopListening } = useWhisperTranscription();
+// 按住录音、松手用本地 whisper.rn 转写成文字（对比方案见 use-funasr-transcription.ts）。
+// 只负责"录音 -> 文字"，不知道、也不关心转写完的文字之后要拿去做什么——
+// 想在转写完成后做点什么（比如丢给 LLM 提取结构化信息），通过 onTranscribed 回调拿结果，
+// 不要在这个文件里直接扎进别的 module（保持 STT 和 LLM 两个 module 各自独立，见 use-voice-expense.ts）。用法：
+//   const { startListening, stopListening } = useWhisperTranscription(onTranscribed);
 //   <Pressable onPressIn={startListening} onPressOut={stopListening} />
-export function useWhisperTranscription() {
+export function useWhisperTranscription(onTranscribed?: (text: string) => void) {
   // whisperContext 加载好之前先存到这个 ref 里，不放进 state 是因为它不参与渲染，
   // 用 ref 避免加载完成时触发一次不必要的重渲染
   const whisperContextRef = useRef<Awaited<ReturnType<typeof getWhisperContext>> | null>(null);
@@ -108,6 +111,10 @@ export function useWhisperTranscription() {
         JSON.stringify(transcribeResult),
       );
       console.log('语音识别结果:', transcribeResult.result);
+
+      if (transcribeResult.result.trim()) {
+        onTranscribed?.(transcribeResult.result);
+      }
     } catch (error) {
       console.log('[Whisper] 识别出错:', error);
     } finally {
