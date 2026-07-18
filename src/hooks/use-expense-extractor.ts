@@ -3,7 +3,6 @@ import {
   fixAndValidateStructuredOutput,
   getStructuredOutputPrompt,
   models,
-  QWEN3_5_0_8B_QUANTIZED,
   useLLM
 } from 'react-native-executorch';
 
@@ -27,7 +26,7 @@ const SYSTEM_PROMPT_SUFFIX = '/no_think';
 //   const { extractExpense, isReady } = useExpenseExtractor();
 //   const expense = await extractExpense('今天在超市花了35块5买菜');
 export function useExpenseExtractor() {
-  const llm = useLLM({ model: QWEN3_5_0_8B_QUANTIZED });
+  const llm = useLLM({ model: EXTRACTION_MODEL });
 
   useEffect(() => {
     if (llm.isReady) console.log('[LLM] 记账信息提取模型已就绪');
@@ -53,6 +52,7 @@ export function useExpenseExtractor() {
         { role: 'system', content: systemPrompt },
         { role: 'user', content: sttText },
       ]);
+      console.log('[LLM] 原始输出:', raw);
       const expense = fixAndValidateStructuredOutput(raw, ExpenseSchema);
       console.log(`[LLM] 提取完成，耗时 ${Date.now() - startedAt}ms:`, expense);
       return expense;

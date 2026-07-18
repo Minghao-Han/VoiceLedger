@@ -16,7 +16,7 @@ type ConfirmationModalProps = {
 
 type Phase = 'loading' | 'form';
 
-export const categories = ['餐饮', '交通', '购物', '娱乐', '医疗', '旅游', '其他'];
+export const categories = ['餐饮', '交通', '购物', '杂货', '娱乐', '医疗', '旅游', '其他'];
 
 function formatCentsToDollars(cents: string): string {
     const num = Number(cents);

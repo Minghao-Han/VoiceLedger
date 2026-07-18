@@ -8,7 +8,7 @@ import { categories } from '@/components/confirmation';
 export const ExpenseSchema = z.object({
   amount: z
     .number()
-    .meta({ description: '金额，"块"或"元" = 整数部分,"角"或"毛" = 小数点后第1位,"分" = 小数点后第2位' }),
+    .meta({ description: '金额，"块=元" = 整数部分,"角"或"毛" = 小数点后第1位,"分" = 小数点后第2位'}),
   type: z
     .enum(categories as [string, ...string[]])
     .meta({ description: '消费分类，必须是给定分类列表里的一个，不能自己发明新分类' }),
