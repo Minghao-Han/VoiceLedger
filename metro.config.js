@@ -4,9 +4,22 @@ const config = getDefaultConfig(__dirname);
 
 // whisper.rn 的 package.json "exports" 字段只有一条 "./*" 通配符映射，没有给包根路径
 // （"."）单独定义 export，按 Node "exports" 规范严格解析的话，连 `import { initWhisper }
-// from 'whisper.rn'` 这种最基础的写法都解析不出来。关掉 Metro 的 package exports 解析，
-// 改走它 package.json 里 "react-native" 字段指向的物理路径，绕开这个问题。
-config.resolver.unstable_enablePackageExports = false;
+// from 'whisper.rn'` 这种最基础的写法都解析不出来。
+// 不能像以前那样直接全局关掉 Metro 的 package exports 解析——react-native-sherpa-onnx
+// 的 exports 字段是规范写的（"./stt"、"./download" 这些子路径都没有物理文件兜底，
+// 全靠 exports 映射），全局关掉会直接解析不出来。所以只针对 whisper.rn 这一个包单独
+// 关掉 exports 解析（用它 package.json "react-native" 字段指向的物理路径），
+// 其他包（包括 react-native-sherpa-onnx）走 Metro 默认的 exports 解析。
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === 'whisper.rn') {
+    return context.resolveRequest(
+      { ...context, unstable_enablePackageExports: false },
+      moduleName,
+      platform,
+    );
+  }
+  return context.resolveRequest(context, moduleName, platform);
+};
 
 // whisper.rn 依赖的 safe-buffer 会 require('buffer')，这是 Node 内置模块，RN 运行时没有。
 // Metro 遇到这种 Node 核心模块名会直接拒绝解析（哪怕 node_modules 里装了同名包也不会自动生效），

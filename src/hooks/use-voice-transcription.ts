@@ -19,10 +19,10 @@ const AUDIO_CONFIG = { sampleRate: 16000, channels: 1, bitsPerSample: 16 };
 // 后面这串词是常见的记账场景词汇，进一步降低识别偏到无关内容的概率。
 const TRANSCRIBE_PROMPT ="以下是包含消费金额的中文语音记录,数字统一使用阿拉伯数字,例如:今天在超市花了35.5元,昨天打车花了12块钱。";
 
-// 按住录音、松手转写成文字。用法：
-//   const { startListening, stopListening } = useVoiceTranscription();
+// 按住录音、松手用本地 whisper.rn 转写成文字（对比方案见 use-funasr-transcription.ts）。用法：
+//   const { startListening, stopListening } = useWhisperTranscription();
 //   <Pressable onPressIn={startListening} onPressOut={stopListening} />
-export function useVoiceTranscription() {
+export function useWhisperTranscription() {
   // whisperContext 加载好之前先存到这个 ref 里，不放进 state 是因为它不参与渲染，
   // 用 ref 避免加载完成时触发一次不必要的重渲染
   const whisperContextRef = useRef<Awaited<ReturnType<typeof getWhisperContext>> | null>(null);

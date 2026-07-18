@@ -33,7 +33,24 @@
       "WebFetch(domain:www.mintlify.com)",
       "Bash(node *)",
       "Bash(awk '/transcribe\\\\\\(/{print NR\": \"$0}' src/index.ts)",
-      "WebFetch(domain:huggingface.co)"
+      "WebFetch(domain:huggingface.co)",
+      "WebFetch(domain:xdcobra-react-native-sherpa-onnx.mintlify.app)",
+      "Bash(npm view *)",
+      "Bash(curl -s https://api.github.com/repos/XDcobra/react-native-sherpa-onnx/contents/)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); print\\('\\\\n'.join\\(f\\\\\"{f['type']}: {f['name']}\\\\\" for f in data\\)\\)\")",
+      "Bash(curl -s https://raw.githubusercontent.com/XDcobra/react-native-sherpa-onnx/main/docs/stt.md)",
+      "Bash(curl -s https://raw.githubusercontent.com/XDcobra/react-native-sherpa-onnx/main/docs/download-manager.md)",
+      "Bash(curl -s \"https://api.github.com/repos/k2-fsa/sherpa-onnx/releases/tags/asr-models\")",
+      "Bash(curl -s https://raw.githubusercontent.com/XDcobra/react-native-sherpa-onnx/main/README.md)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('main'\\)\\); print\\(d.get\\('exports'\\) if 'exports' in d else 'no exports field'\\)\")",
+      "Read(//tmp/**)",
+      "Bash(npm pack *)",
+      "Bash(tar -tzf react-native-sherpa-onnx-0.4.3.tgz)",
+      "Bash(grep -E \"^package/[a-z]+\\\\.js$|^package/[a-z]+/index\\\\.js$\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['version']\\)\")",
+      "Bash(adb devices *)",
+      "Bash(python3 -m json.tool)",
+      "Bash(unzip -l /mnt/d/Applications/budget-app/android/app/build/outputs/apk/debug/app-debug.apk)"
     ]
   }
 }
