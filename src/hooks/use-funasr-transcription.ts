@@ -98,8 +98,7 @@ export function useFunasrTranscription() {
       const startedAt = Date.now();
       const result = await sttEngine.transcribeSamples(samples, AUDIO_CONFIG.sampleRate);
       console.log(
-        `[FunASR] 转写完成，耗时 ${Date.now() - startedAt}ms，完整结果:`,
-        JSON.stringify(result),
+        `[FunASR] 转写完成，耗时 ${Date.now() - startedAt}ms`
       );
       console.log('语音识别结果:', result.text);
     } catch (error) {
