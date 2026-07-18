@@ -25,4 +25,14 @@ config.resolver.assetExts.push('bin');
 // 不包含 wasm，不加这行 web 端打包会直接报 "Unable to resolve module ... wa-sqlite.wasm"
 config.resolver.assetExts.push('wasm');
 
+// 项目根目录下有个手动 git clone 下来的 whisper.cpp/（用来量化模型用的，跟 App 本身的
+// 打包/运行没关系）。Metro 的文件监听器会递归监听项目根目录下所有文件，这个仓库体积很大、
+// git 内部文件churn 又很频繁，监听器在 Windows 上曾经因为读到 git 操作过程中一闪而过的
+// 临时文件（.git 目录里类似 tlhT3xn 这种）而直接崩溃报 EACCES。
+// 加进 blockList 让 Metro 完全无视这个目录。
+config.resolver.blockList = [
+  ...config.resolver.blockList,
+  /whisper\.cpp[\\/].*/,
+];
+
 module.exports = config;

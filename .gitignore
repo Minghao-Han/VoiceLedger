@@ -45,3 +45,6 @@ example
 # Whisper 模型文件太大（~75MB），不进 git；npm install 后自动跑
 # scripts/download-whisper-model.js 拉下来
 /assets/models
+
+# 手动 clone 下来量化模型用的，不是这个项目的一部分，不进 git
+/whisper.cpp

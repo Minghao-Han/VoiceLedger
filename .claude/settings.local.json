@@ -32,7 +32,8 @@
       "Bash(grep -E \"^\\(android|ios\\)$\")",
       "WebFetch(domain:www.mintlify.com)",
       "Bash(node *)",
-      "Bash(awk '/transcribe\\\\\\(/{print NR\": \"$0}' src/index.ts)"
+      "Bash(awk '/transcribe\\\\\\(/{print NR\": \"$0}' src/index.ts)",
+      "WebFetch(domain:huggingface.co)"
     ]
   }
 }

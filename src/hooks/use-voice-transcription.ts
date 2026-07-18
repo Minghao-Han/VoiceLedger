@@ -1,10 +1,10 @@
+import { File, Paths } from 'expo-file-system';
 import { useEffect, useRef } from 'react';
 import { PermissionsAndroid, Platform } from 'react-native';
-import { File, Paths } from 'expo-file-system';
 
-import { getWhisperContext } from '@/lib/whisper';
-import { encodeWav } from '@/lib/wav';
 import { initPcmRecorder, startPcmRecording, stopPcmRecording } from '@/lib/audioRecorder';
+import { encodeWav } from '@/lib/wav';
+import { getWhisperContext } from '@/lib/whisper';
 
 // 说话超过这个时长会被强制打断，兜底用户忘记松手/一直按着的情况
 const MAX_RECORDING_MS = 15000;
@@ -12,6 +12,12 @@ const MAX_RECORDING_MS = 15000;
 // 这三个参数既是录音参数，也是拼 WAV 头要用的参数，两边必须完全一致，
 // 不然算出来的头跟实际数据对不上
 const AUDIO_CONFIG = { sampleRate: 16000, channels: 1, bitsPerSample: 16 };
+
+// whisper.rn 的 TranscribeOptions.prompt：用来给模型一个初始提示，引导它往这个场景的
+// 词汇去识别（金额、消费分类），而不是当成没有上下文的通用一句话去转写。
+// 分类列表直接从 confirmation.tsx 导入，避免这里的提示词跟 UI 上真实的分类列表脱节；
+// 后面这串词是常见的记账场景词汇，进一步降低识别偏到无关内容的概率。
+const TRANSCRIBE_PROMPT ="以下是包含消费金额的中文语音记录,数字统一使用阿拉伯数字,例如:今天在超市花了35.5元,昨天打车花了12块钱。";
 
 // 按住录音、松手转写成文字。用法：
 //   const { startListening, stopListening } = useVoiceTranscription();
@@ -92,7 +98,10 @@ export function useVoiceTranscription() {
 
       console.log('[Whisper] 开始转写...');
       const startedAt = Date.now();
-      const { promise } = whisperContext.transcribe(file.uri, { language: 'zh' });
+      const { promise } = whisperContext.transcribe(file.uri, {
+        language: 'zh',
+        prompt: TRANSCRIBE_PROMPT,
+      });
       const transcribeResult = await promise;
       console.log(
         `[Whisper] 转写完成，耗时 ${Date.now() - startedAt}ms，完整结果:`,
