@@ -22,8 +22,7 @@ function pcmChunksToFloatSamples(chunks: Uint8Array[]): number[] {
   return samples;
 }
 
-// 按住录音、松手用 FunASR（SenseVoice，经 sherpa-onnx 跑在本地）转写成文字，
-// 跟 use-voice-transcription.ts（whisper.rn 方案）是两套独立实现，方便对比效果、随时切换。
+// 按住录音、松手用 FunASR（SenseVoice，经 sherpa-onnx 跑在本地）转写成文字。
 // 只负责"录音 -> 文字"，不知道、也不关心转写完的文字之后要拿去做什么——
 // 想在转写完成后做点什么（比如丢给 LLM 提取结构化信息），通过 onTranscribed 回调拿结果，
 // 不要在这个文件里直接扎进别的 module（保持 STT 和 LLM 两个 module 各自独立，见 use-voice-expense.ts）。用法：

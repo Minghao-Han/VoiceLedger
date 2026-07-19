@@ -56,7 +56,13 @@
       "Bash(python3 -c \"import json,sys; print\\(json.load\\(sys.stdin\\)['version']\\)\")",
       "Bash(npm ls *)",
       "Read(//mnt/d/Applications/android-sdk/ndk/**)",
-      "Read(//mnt/d/Applications/android-sdk/ndk/27.0.12077973/**)"
+      "Read(//mnt/d/Applications/android-sdk/ndk/27.0.12077973/**)",
+      "Bash(git -C /mnt/d/Applications/budget-app log --oneline -- android/)",
+      "Bash(git -C /mnt/d/Applications/budget-app ls-files android/)",
+      "Read(//home/inghao_an/miniconda3/envs/optimum-executorch/bin/**)",
+      "Read(//home/inghao_an/miniconda3/envs/optimum-executorch/lib/python3.11/site-packages/optimum/exporters/executorch/**)",
+      "Bash(/home/inghao_an/miniconda3/envs/optimum-executorch/bin/pip install *)",
+      "Bash(/home/inghao_an/miniconda3/envs/optimum-executorch/bin/python *)"
     ]
   }
 }
