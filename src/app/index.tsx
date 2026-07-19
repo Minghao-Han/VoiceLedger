@@ -12,7 +12,7 @@ import { useVoiceExpense } from '@/hooks/use-voice-expense';
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { startListening, stopListening } = useVoiceExpense();
+  const { startListening, stopListening, expense, isAnalyzing } = useVoiceExpense();
 
   return (
     <ThemedView style={styles.container}>
@@ -33,7 +33,12 @@ export default function HomeScreen() {
         >
           <ThemedText type="title">🎙️</ThemedText>
         </Pressable>
-        <ConfirmationModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+        <ConfirmationModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          expense={expense}
+          isAnalyzing={isAnalyzing}
+        />
 
 
         {Platform.OS === 'web' && <WebBadge />}

@@ -6,15 +6,16 @@ import { ThemedView } from './themed-view';
 
 import { Spacing } from '@/constants/theme';
 import { insertTransaction } from '@/db/transactions';
+import type { Expense } from '@/lib/expenseExtraction';
 import { Picker } from '@react-native-picker/picker';
 import { useEffect, useState } from 'react';
 
 type ConfirmationModalProps = {
   visible: boolean;
   onClose: () => void;
+  expense?: Expense | null;
+  isAnalyzing?: boolean;
 };
-
-type Phase = 'loading' | 'form';
 
 export const categories = ['餐饮', '交通', '购物', '杂货', '娱乐', '医疗', '旅游', '其他'];
 
@@ -24,26 +25,35 @@ function formatCentsToDollars(cents: string): string {
     return (num / 100).toFixed(2);
 }
 
-export default function ConfirmationModal({ visible, onClose }: ConfirmationModalProps) {
-    const [phase, setPhase] = useState<Phase>('loading');
+export default function ConfirmationModal({
+    visible,
+    onClose,
+    expense,
+    isAnalyzing = false,
+}: ConfirmationModalProps) {
+    const phase = isAnalyzing ? 'loading' : 'form';
     const db = useSQLiteContext();
     const [amountCents, setAmountCents] = useState('');
     const [currency, setCurrency] = useState<'USD' | 'RMB'>('USD');
     const [category, setCategory] = useState<string | null>(null);
     const [note, setNote] = useState('');
+
+    // 弹窗每次重新打开都是一次全新的记账，先清掉上一轮留下的字段
     useEffect(() => {
         if (!visible) return;
-
-        setPhase('loading');
-        const timer = setTimeout(() => {
-            setPhase('form');
-        }, 2000);
         setAmountCents('');
         setCategory(null);
         setNote('');
-
-        return () => clearTimeout(timer);
     }, [visible]);
+
+    // 模型分析完成后，用解析出的金额/分类/备注回填表单
+    useEffect(() => {
+        if (!visible || !expense) return;
+        setAmountCents(String(Math.round(expense.amount * 100)));
+        setCategory(expense.type);
+        setNote(expense.note);
+    }, [visible, expense]);
+
     return (
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
             <View style={styles.modalBackdrop}>
